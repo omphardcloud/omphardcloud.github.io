@@ -57,7 +57,7 @@ Instead of using the *module* clause, to specify a pre-designed hardware module,
 
 This HardCloud operation mode is on-going work, and should be ready by late Feb. 2017.
 
-<h2><font color="red">Open-souce release planned to 02/15/2018!</font></h2>
+<h2><font color="red">Open-souce release planned to 03/15/2018!</font></h2>
 
 <!--- 
 ## The 1st HardCloud Workshop
