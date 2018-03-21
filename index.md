@@ -17,11 +17,6 @@ This can be done using two modes as described below: (1) Offloading a pre-synthe
 module; and (2) Using HardCloud to synthesize C and offload the resulting module.
 
 ### Offloading a pre-synthesized module
-Here is a video demonstrating how to use the HardCloud for a pre-defined bitstream..
-
-<div class="embed-responsive embed-responsive-16by9">
-  <iframe width="560" height="315" src="https://www.youtube.com/embed/r5GFYUj2ajA?rel=0" frameborder="0" allowfullscreen></iframe>
-</div>
 
 {% highlight C %}
 #pragma omp target device(HARPSIM) map(to: A) map(from: B)
@@ -55,19 +50,6 @@ Instead of using the *module* clause, to specify a pre-designed hardware module,
     }
 {% endhighlight %}
 
-This HardCloud operation mode is on-going work, and should be ready by late Feb. 2017.
+<!-- This HardCloud operation mode is on-going work, and should be ready by late Feb. 2017. -->
 
-<h2><font color="red">Open-souce release planned to 03/15/2018!</font></h2>
-
-<!--- 
-## The 1st HardCloud Workshop
-
-*[HardCloud Tutorial](https://drive.google.com/file/d/0BwtIJD4CW5jfWlUyallEUXNWNGs3TW0wb21TdFJRY1REU2pv/view?usp=sharing).
-
- *[HardCloud Slides](https://drive.google.com/open?id=0BwtIJD4CW5jfY3V1M2V3cTUwazR6LTBURGdBdEZ3N2lEcWdJ).
-
-
- ## Documentation, Installation, Configuration
-
- All the information is provided [in the Wiki](https://github.com/omp2ocl/aclang/wiki).
- -->
+<h2><font color="red">Open-souce release planned to 04/20/2018!</font></h2>
