@@ -20,13 +20,12 @@ module; and (2) Using HardCloud to synthesize C and offload the resulting module
 
 {% highlight C %}
 #pragma omp target device(HARPSIM) map(to: A) map(from: B)
- #pragma omp parallel for use(hrw) module(loopback)
- // Code that represents the loopback bitstream
-   for (int i = 0; i < NI; i++)
-   {
-     B[i] = A[i];
-   }
- {% endhighlight %}
+#pragma omp parallel for use(hrw) module(loopback)
+// Code that represents the loopback bitstream
+for (int i = 0; i < NI; i++) {
+    B[i] = A[i];
+}
+{% endhighlight %}
 
 The example above shows the syntax that was adopted. As said in the video, the *map(:to)* clause indicates
 the data that will be sent to the accelerator, while the *map(:from)* indicates the data that will be received from the accelerator as a result. The clause *use(hrw)* specifies that the annotated code block will use a pre-designed hardware, for example module (loopback), to do the computation instead of the C code following the annotation. The *device(HARPSIM)* clause indicates that the execution will be performed by the HARP2 simulator.
@@ -39,17 +38,18 @@ Instead of using the *module* clause, to specify a pre-designed hardware module,
 
 {% highlight C %}
 #pragma omp target device(HARP)
-  #pragma omp target map(to: A[:N*N], B[:N*N]) map(from: C[:N*N])
-  // Convert loop to OpenCL and then to  Verilog and synthesize
-  #pragma omp parallel for use(hrw) synthesize(matmul)
-  for(int i=0; i < N; ++i)
-    for (int j = 0; j < N; ++j){
-      C[i * N + j] = 0;
-      for (int k = 0; k < N; ++k)
-        C[i * N + j] += A[i * N + k] * B[k * N + j];
+#pragma omp target map(to: A[:N*N], B[:N*N]) map(from: C[:N*N])
+// Convert loop to OpenCL and then to  Verilog and synthesize
+#pragma omp parallel for use(hrw) synthesize(matmul)
+for(int i=0; i < N; ++i) {
+    for (int j = 0; j < N; ++j) {
+        C[i * N + j] = 0;
+        
+        for (int k = 0; k < N; ++k) {
+            C[i * N + j] += A[i * N + k] * B[k * N + j];
+        }
     }
+}
 {% endhighlight %}
-
-<!-- This HardCloud operation mode is on-going work, and should be ready by late Feb. 2017. -->
 
 <h2><font color="red">Open-souce release planned to 04/20/2018!</font></h2>
