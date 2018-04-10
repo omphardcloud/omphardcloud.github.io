@@ -31,7 +31,7 @@ for (int i = 0; i < NI; i++) {
 {% endhighlight %}
 
 <p align="justify">
-The example above shows the syntax that was adopted. As said in the video, the <b>map(:to)</b> clause indicates
+The example above shows the syntax that was adopted. The <b>map(:to)</b> clause indicates
 the data that will be sent to the accelerator, while the <b>map(:from)</b> indicates the data that will be received from the accelerator as a result. The clause <b>use(hrw)</b> specifies that the annotated code block will use a pre-designed hardware, for example module (loopback), to do the computation instead of the C code following the annotation. The <b>device(HARPSIM)</b> clause indicates that the execution will be performed by the HARP2 simulator.
 Optionally to HARPSIM, one can use the HARP device that instructs the
 HardCloud to generate code for the real HARP instead of for the simulator.
