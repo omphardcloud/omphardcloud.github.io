@@ -4,17 +4,20 @@ title: HardCloud
 permalink: /
 ---
 
-The computing industry has recently proposed the use of  FPGAs as a way to improve performance and energy efficiency in modern cloud clusters. Unfortunately, using such FPGA clusters  is a very hard and complex task. In this context, we present HardCloud a novel and simple mechanism to offload computation to  the FPGAs available in the  Intel HARP2 platform. HardCloud extends OpenMP directives in such a way that the FPGA becomes just another OpenMP acceleration device that can be used directly from any user program. <!---
-HardCloud is a subproject of [AClang](https://omp2ocl.github.io/aclang)).-->
+<p align="justify">
+The computing industry has recently proposed the use of  FPGAs as a way to improve performance and energy efficiency in modern cloud clusters. Unfortunately, using such FPGA clusters  is a very hard and complex task. In this context, we present HardCloud a novel and simple mechanism to offload computation to  the FPGAs available in the  Intel HARP2 platform. HardCloud extends OpenMP directives in such a way that the FPGA becomes just another OpenMP acceleration device that can be used directly from any user program.
+</p>
 
 ## How it works
 
+<p align="justify">
 The version 4.0 of the  OpenMP standard introduces new directives that
 enable the transfer of  computation to heterogeneous computing devices
 (e.g.  GPUs  or  DSP).  We  use this  programming  model  to  transfer
 computation to the HARP2 platform or to an HARP2 simulator (for debug purpose).
 This can be done using two modes as described below: (1) Offloading a pre-synthesized
 module; and (2) Using HardCloud to synthesize C and offload the resulting module.
+</p>
 
 ### Offloading a pre-synthesized module
 
@@ -27,14 +30,18 @@ for (int i = 0; i < NI; i++) {
 }
 {% endhighlight %}
 
-The example above shows the syntax that was adopted. As said in the video, the *map(:to)* clause indicates
-the data that will be sent to the accelerator, while the *map(:from)* indicates the data that will be received from the accelerator as a result. The clause *use(hrw)* specifies that the annotated code block will use a pre-designed hardware, for example module (loopback), to do the computation instead of the C code following the annotation. The *device(HARPSIM)* clause indicates that the execution will be performed by the HARP2 simulator.
+<p align="justify">
+The example above shows the syntax that was adopted. As said in the video, the <b>map(:to)</b> clause indicates
+the data that will be sent to the accelerator, while the <b>map(:from)</b> indicates the data that will be received from the accelerator as a result. The clause <b>use(hrw)</b> specifies that the annotated code block will use a pre-designed hardware, for example module (loopback), to do the computation instead of the C code following the annotation. The <b>device(HARPSIM)</b> clause indicates that the execution will be performed by the HARP2 simulator.
 Optionally to HARPSIM, one can use the HARP device that instructs the
-HardCloud to generate code for the real HARP instead of for the simulator. 
+HardCloud to generate code for the real HARP instead of for the simulator.
+</p>
 
 ### Using HardCloud to synthesize C and offload the resulting module
 
-Instead of using the *module* clause, to specify a pre-designed hardware module, a programmer can  use the HardCloud *synthesize* clause to generate a new bitstream starting from C code. For example, by using the synthesize clause in the following annotated code,  a C code  matrix multiplication  can be converted to OpenCL, followed to Verilog and finally synthesized as a hardware bitstream using the  Intel FPGA SDK for OpenCL. HardCloud takes the resulting bitstream, automatically  configures the HARP2 FPGA and finally runs the application.
+<p align="justify">
+Instead of using the <b>module</b> clause, to specify a pre-designed hardware module, a programmer can  use the HardCloud <b>synthesize</b> clause to generate a new bitstream starting from C code. For example, by using the synthesize clause in the following annotated code,  a C code  matrix multiplication  can be converted to OpenCL, followed to Verilog and finally synthesized as a hardware bitstream using the  Intel FPGA SDK for OpenCL. HardCloud takes the resulting bitstream, automatically  configures the HARP2 FPGA and finally runs the application.
+</p>
 
 {% highlight C %}
 #pragma omp target device(HARP)
