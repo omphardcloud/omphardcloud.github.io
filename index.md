@@ -24,7 +24,7 @@ module; and (2) Using HardCloud to synthesize C and offload the resulting module
 {% highlight C %}
 #pragma omp target device(HARPSIM) map(to: A) map(from: B)
 #pragma omp parallel for use(hrw) module(loopback)
-// Code that represents the loopback bitstream
+// Software version of the loopback hardware module.
 for (int i = 0; i < NI; i++) {
     B[i] = A[i];
 }
