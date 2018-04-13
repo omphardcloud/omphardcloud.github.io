@@ -40,6 +40,10 @@ HardCloud to generate code for the real HARP instead of for the simulator.
 ### Using HardCloud to synthesize C and offload the resulting module
 
 <p align="justify">
+This feature is not supported by the current release.
+</p>
+
+<p align="justify">
 Instead of using the <b>module</b> clause, to specify a pre-designed hardware module, a programmer can  use the HardCloud <b>synthesize</b> clause to generate a new bitstream starting from C code. For example, by using the synthesize clause in the following annotated code,  a C code  matrix multiplication  can be converted to OpenCL, followed to Verilog and finally synthesized as a hardware bitstream using the  Intel FPGA SDK for OpenCL. HardCloud takes the resulting bitstream, automatically  configures the HARP2 FPGA and finally runs the application.
 </p>
 
