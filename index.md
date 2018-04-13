@@ -40,7 +40,7 @@ HardCloud to generate code for the real HARP instead of for the simulator.
 ### Using HardCloud to synthesize C and offload the resulting module
 
 <p align="justify">
-[<i>This feature is not supported by this release</i>]
+[<i>This feature is not supported by the current release</i>]
 </p>
 
 <p align="justify">
