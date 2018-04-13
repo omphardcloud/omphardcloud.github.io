@@ -59,4 +59,10 @@ for(int i=0; i < N; ++i) {
 }
 {% endhighlight %}
 
+## Documentation, Installation, Configuration
+
+<p align="justify">
+All the information is provided in the <a href="https://github.com/omphardcloud/hardcloud/wiki">Wiki</a>.
+</p>
+
 <h2><font color="red">Open-souce release planned to 04/20/2018!</font></h2>
