@@ -22,11 +22,11 @@ module; and (2) Using HardCloud to synthesize C and offload the resulting module
 ### Offloading a pre-synthesized module
 
 {% highlight C %}
-#pragma omp target device(HARPSIM) map(to: A) map(from: B)
+#pragma omp target device(HARPSIM) map(to: X) map(from: Y)
 #pragma omp parallel for use(hrw) module(loopback)
 // Software version of the loopback hardware module.
 for (int i = 0; i < NI; i++) {
-    B[i] = A[i];
+    Y[i] = X[i];
 }
 {% endhighlight %}
 
