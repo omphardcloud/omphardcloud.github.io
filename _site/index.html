@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>HardCloud – HardCloud – FPGA Computing Made Easy!</title>
+
+        <meta charset="utf-8" />
+    <meta content='text/html; charset=utf-8' http-equiv='Content-Type'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0'>
+
+    
+    <meta name="description" content="FPGA Computing Made Easy!">
+    <meta property="og:description" content="FPGA Computing Made Easy!" />
+    
+    <meta name="author" content="HardCloud" />
+
+    
+    <meta property="og:title" content="HardCloud" />
+    <meta property="twitter:title" content="HardCloud" />
+    
+
+    <!--[if lt IE 9]>
+      <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <link rel="stylesheet" type="text/css" href="/style.css" />
+    <link rel="alternate" type="application/rss+xml" title="HardCloud - FPGA Computing Made Easy!" href="/feed.xml" />
+
+    <!-- Created with Jekyll Now - http://github.com/barryclark/jekyll-now -->
+  </head>
+
+  <body>
+    <div class="wrapper-masthead">
+      <div class="container">
+        <header class="masthead clearfix">
+          <a href="/" class="site-avatar"><img src="https://raw.githubusercontent.com/ramonn76/HarpCloud/master/images/aclang-logo.png" /></a>
+
+          <div class="site-info">
+            <h1 class="site-name"><a href="/">HardCloud</a></h1>
+            <p class="site-description">FPGA Computing Made Easy!</p>
+          </div>
+
+          <nav>
+            <a href="/">Home</a>
+            <a href="https://github.com/omphardcloud/hardcloud/wiki">Wiki</a>
+            <a href="/video">Video</a>
+            <a href="/blog">Blog</a>
+            <a href="/publications">Publications</a>
+            <a href="mailto: contact@hardcloud.org">Contact</a>
+          </nav>
+        </header>
+      </div>
+    </div>
+
+    <div id="main" role="main" class="container">
+      <article class="page">
+
+  <h1>HardCloud</h1>
+
+  <div class="entry">
+    <p align="justify">
+The computing industry has recently proposed the use of  FPGAs as a way to improve performance and energy efficiency in modern cloud clusters. Unfortunately, using such FPGA clusters  is a very hard and complex task. In this context, we present HardCloud a novel and simple mechanism to offload computation to  the FPGAs available in the  Intel HARP2 platform. HardCloud extends OpenMP directives in such a way that the FPGA becomes just another OpenMP acceleration device that can be used directly from any user program.
+</p>
+
+<h2 id="how-it-works">How it works</h2>
+
+<p align="justify">
+The version 4.0 of the  OpenMP standard introduces new directives that
+enable the transfer of  computation to heterogeneous computing devices
+(e.g.  GPUs  or  DSP).  We  use this  programming  model  to  transfer
+computation to the HARP2 platform or to an HARP2 simulator (for debug purpose).
+This can be done using two modes as described below: (1) Offloading a pre-synthesized
+module; and (2) Using HardCloud to synthesize C and offload the resulting module.
+</p>
+
+<h3 id="offloading-a-pre-synthesized-module">Offloading a pre-synthesized module</h3>
+
+<figure class="highlight"><pre><code class="language-c" data-lang="c"><span class="cp">#pragma omp target device(HARPSIM) map(to: X) map(from: Y)
+#pragma omp parallel for use(hrw) module(loopback)
+</span><span class="c1">// Software version of the loopback hardware module.
+</span><span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">NI</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">Y</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+<span class="p">}</span></code></pre></figure>
+
+<p align="justify">
+The example above shows the syntax that was adopted. The <b>map(:to)</b> clause indicates
+the data that will be sent to the accelerator, while the <b>map(:from)</b> indicates the data that will be received from the accelerator as a result. The clause <b>use(hrw)</b> specifies that the annotated code block will use a pre-designed hardware, for example module (loopback), to do the computation instead of the C code following the annotation. The <b>device(HARPSIM)</b> clause indicates that the execution will be performed by the HARP2 simulator.
+Optionally to HARPSIM, one can use the HARP device that instructs the
+HardCloud to generate code for the real HARP instead of for the simulator.
+</p>
+
+<h3 id="using-hardcloud-to-synthesize-c-and-offload-the-resulting-module">Using HardCloud to synthesize C and offload the resulting module</h3>
+
+<p align="justify">
+<i>[This feature is not supported by the current release]</i>
+</p>
+
+<p align="justify">
+Instead of using the <b>module</b> clause, to specify a pre-designed hardware module, a programmer can  use the HardCloud <b>synthesize</b> clause to generate a new bitstream starting from C code. For example, by using the synthesize clause in the following annotated code,  a C code  matrix multiplication  can be converted to OpenCL, followed to Verilog and finally synthesized as a hardware bitstream using the  Intel FPGA SDK for OpenCL. HardCloud takes the resulting bitstream, automatically  configures the HARP2 FPGA and finally runs the application.
+</p>
+
+<figure class="highlight"><pre><code class="language-c" data-lang="c"><span class="cp">#pragma omp target device(HARP)
+#pragma omp target map(to: A[:N*N], B[:N*N]) map(from: C[:N*N])
+</span><span class="c1">// Convert loop to OpenCL and then to  Verilog and synthesize
+</span><span class="cp">#pragma omp parallel for use(hrw) synthesize(matmul)
+</span><span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">N</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">N</span><span class="p">;</span> <span class="o">++</span><span class="n">j</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">C</span><span class="p">[</span><span class="n">i</span> <span class="o">*</span> <span class="n">N</span> <span class="o">+</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        
+        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">k</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">k</span> <span class="o">&lt;</span> <span class="n">N</span><span class="p">;</span> <span class="o">++</span><span class="n">k</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">C</span><span class="p">[</span><span class="n">i</span> <span class="o">*</span> <span class="n">N</span> <span class="o">+</span> <span class="n">j</span><span class="p">]</span> <span class="o">+=</span> <span class="n">A</span><span class="p">[</span><span class="n">i</span> <span class="o">*</span> <span class="n">N</span> <span class="o">+</span> <span class="n">k</span><span class="p">]</span> <span class="o">*</span> <span class="n">B</span><span class="p">[</span><span class="n">k</span> <span class="o">*</span> <span class="n">N</span> <span class="o">+</span> <span class="n">j</span><span class="p">];</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span></code></pre></figure>
+
+<h2 id="documentation-installation-configuration">Documentation, Installation, Configuration</h2>
+
+<p align="justify">
+All the information is provided in the <a href="https://github.com/omphardcloud/hardcloud/wiki">Wiki</a>.
+</p>
+
+<h2><font color="red">HardCloud v0.1 is now released!!!</font></h2>
+
+  </div>
+</article>
+
+    </div>
+
+    <div class="wrapper-footer">
+      <div class="container">
+        <footer class="footer">
+        <!--  
+<a href="mailto:contact@aclang.org"><i class="svg-icon email"></i></a>
+
+
+<a href="https://github.com/omp2ocl"><i class="svg-icon github"></i></a>
+
+
+
+
+
+
+
+-->
+        </footer>
+      </div>
+    </div>
+
+    
+
+  </body>
+</html>
